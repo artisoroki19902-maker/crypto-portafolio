@@ -1,0 +1,377 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crypto Portfolio</title>
+
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #141b2d;
+      --card2: #1a2338;
+      --text: #f5f7fb;
+      --muted: #9aa7bd;
+      --border: #28334a;
+      --green: #32d583;
+      --red: #f97066;
+      --blue: #6ea8fe;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin: 22px 0;
+      flex-wrap: wrap;
+    }
+
+    .total-card {
+      background: linear-gradient(135deg, #18233d, #101827);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      min-width: 280px;
+    }
+
+    .total-label {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    #total {
+      font-size: 34px;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 13px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--green);
+      color: #07130d;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    #status {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 10px;
+    }
+
+    .table-card {
+      overflow-x: auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+
+    th, td {
+      padding: 15px;
+      border-bottom: 1px solid var(--border);
+      text-align: right;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    th:first-child,
+    td:first-child {
+      text-align: left;
+    }
+
+    .token {
+      font-weight: 700;
+    }
+
+    .id {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 3px;
+    }
+
+    .value {
+      font-weight: 700;
+    }
+
+    .error {
+      color: var(--red);
+    }
+
+    .updated {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 14px; }
+      h1 { font-size: 24px; }
+      #total { font-size: 28px; }
+      .total-card { width: 100%; }
+    }
+  </style>
+
+</head>
+
+<body>
+  <main class="container">
+
+```
+<h1>Crypto Portfolio</h1>
+<p class="subtitle">Live USD portfolio valuation</p>
+
+<section class="top">
+  <div class="total-card">
+    <div class="total-label">Total Portfolio Value</div>
+    <div id="total">$0.00</div>
+    <div id="status">Ready to refresh prices.</div>
+  </div>
+
+  <button id="refreshButton">Refresh Prices</button>
+</section>
+
+<section class="table-card">
+  <table>
+    <thead>
+      <tr>
+        <th>Token</th>
+        <th>Amount</th>
+        <th>Price</th>
+        <th>Value</th>
+        <th>Weight</th>
+      </tr>
+    </thead>
+
+    <tbody id="portfolioRows"></tbody>
+  </table>
+</section>
+
+<div class="updated" id="updatedAt"></div>
+```
+
+  </main>
+
+<script>
+
+const portfolio = [
+  { symbol: "UNI", amount: 252.937, id: "uniswap" },
+  { symbol: "LINK", amount: 57.483, id: "chainlink" },
+  { symbol: "AAVE", amount: 5.012, id: "aave" },
+  { symbol: "SOL", amount: 11.106, id: "solana" },
+  { symbol: "BNB", amount: 1.407, id: "binancecoin" },
+  { symbol: "HYPE", amount: 11.58, id: "hyperliquid" },
+  { symbol: "BTC", amount: 0.02001204, id: "bitcoin" },
+  { symbol: "NEAR", amount: 333.89, id: "near" },
+  { symbol: "MON", amount: 9547, id: "monad" },
+  { symbol: "ADA", amount: 1106.55, id: "cardano" },
+  { symbol: "SUI", amount: 283.277, id: "sui" },
+  { symbol: "PUMP", amount: 64365, id: "pump-fun" },
+  { symbol: "CAKE", amount: 90.18, id: "pancakeswap-token" },
+  { symbol: "ETH", amount: 0.92865, id: "ethereum" },
+  { symbol: "MORPHO", amount: 169.8, id: "morpho" },
+  { symbol: "COMP", amount: 19.76, id: "compound-governance-token" },
+  { symbol: "AVAX", amount: 44.26874, id: "avalanche-2" },
+  { symbol: "TRX", amount: 1327.985, id: "tron" },
+  { symbol: "STORM", amount: 30281, id: "storm-trade" },
+  { symbol: "XRP", amount: 696.216, id: "ripple" },
+  { symbol: "TWT", amount: 606, id: "trust-wallet-token" }
+];
+
+let prices = {};
+
+function formatUSD(value) {
+  if (value === null || value === undefined) return "—";
+
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: value < 1 ? 6 : 2
+  }).format(value);
+}
+
+function formatAmount(value) {
+  return new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 8
+  }).format(value);
+}
+
+function renderPortfolio() {
+
+  const rows = document.getElementById("portfolioRows");
+
+  const positions = portfolio.map(token => {
+    const price = prices[token.id]?.usd;
+
+    return {
+      ...token,
+      price,
+      value: price ? token.amount * price : null
+    };
+  });
+
+  const total = positions.reduce(
+    (sum, position) => sum + (position.value || 0),
+    0
+  );
+
+  rows.innerHTML = positions.map(position => {
+
+    const weight =
+      position.value && total
+        ? (position.value / total) * 100
+        : null;
+
+    return `
+      <tr>
+        <td>
+          <span class="token">${position.symbol}</span>
+          <span class="id">${position.id}</span>
+        </td>
+
+        <td>${formatAmount(position.amount)}</td>
+
+        <td>
+          ${
+            position.price
+              ? formatUSD(position.price)
+              : '<span class="error">Unavailable</span>'
+          }
+        </td>
+
+        <td class="value">
+          ${formatUSD(position.value)}
+        </td>
+
+        <td>
+          ${weight ? weight.toFixed(2) + "%" : "—"}
+        </td>
+      </tr>
+    `;
+
+  }).join("");
+
+  document.getElementById("total").textContent =
+    formatUSD(total);
+}
+
+async function refreshPrices() {
+
+  const button = document.getElementById("refreshButton");
+  const status = document.getElementById("status");
+
+  button.disabled = true;
+  button.textContent = "Refreshing...";
+  status.textContent = "Fetching live market prices...";
+
+  try {
+
+    const ids = portfolio.map(token => token.id).join(",");
+
+    const url =
+      "https://api.coingecko.com/api/v3/simple/price" +
+      "?ids=" + encodeURIComponent(ids) +
+      "&vs_currencies=usd" +
+      "&include_last_updated_at=true";
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(
+        "Price API returned HTTP " + response.status
+      );
+    }
+
+    prices = await response.json();
+
+    renderPortfolio();
+
+    const missing = portfolio
+      .filter(token => !prices[token.id])
+      .map(token => token.symbol);
+
+    if (missing.length > 0) {
+      status.innerHTML =
+        "Updated, but unavailable: " + missing.join(", ");
+    } else {
+      status.textContent =
+        "All portfolio prices updated successfully.";
+    }
+
+    document.getElementById("updatedAt").textContent =
+      "Last refresh: " +
+      new Date().toLocaleString();
+
+  } catch (error) {
+
+    console.error(error);
+
+    status.textContent =
+      "Could not refresh prices: " +
+      error.message;
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = "Refresh Prices";
+
+  }
+}
+
+document
+  .getElementById("refreshButton")
+  .addEventListener("click", refreshPrices);
+
+renderPortfolio();
+refreshPrices();
+
+</script>
+
+</body>
+</html>
