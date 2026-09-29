@@ -1,185 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crypto Portfolio Tracker</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0f14">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<title>Crypto Portfolio</title>
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b0f14;
-      color: #f5f7fa;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 20px;
-    }
+body {
+  margin: 0;
+  background: #0b0f14;
+  color: #f5f7fa;
+  font-family: Arial, Helvetica, sans-serif;
+}
 
-    h1 {
-      margin-bottom: 6px;
-      font-size: 28px;
-    }
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 18px;
+}
 
-    .subtitle {
-      color: #8f9baa;
-      margin-bottom: 20px;
-    }
+h1 {
+  margin: 0 0 6px;
+  font-size: 28px;
+}
 
-    .topbar {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
-    }
+.subtitle {
+  color: #8f9baa;
+  margin-bottom: 18px;
+}
 
-    button {
-      background: #2563eb;
-      color: white;
-      border: 0;
-      border-radius: 8px;
-      padding: 11px 16px;
-      font-size: 14px;
-      cursor: pointer;
-    }
+.buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
 
-    button:hover {
-      background: #1d4ed8;
-    }
+button {
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 16px;
+  color: white;
+  background: #2563eb;
+  cursor: pointer;
+  font-size: 14px;
+}
 
-    button.secondary {
-      background: #374151;
-    }
+button.secondary {
+  background: #374151;
+}
 
-    button.secondary:hover {
-      background: #4b5563;
-    }
+button:active {
+  transform: translateY(1px);
+}
 
-    .summary {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 20px;
-    }
+.summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
 
-    .card {
-      background: #141a22;
-      border: 1px solid #222b36;
-      border-radius: 12px;
-      padding: 18px;
-    }
+.card {
+  background: #141a22;
+  border: 1px solid #222b36;
+  border-radius: 12px;
+  padding: 17px;
+}
 
-    .card-label {
-      color: #8f9baa;
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
+.card-label {
+  color: #8f9baa;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
 
-    .card-value {
-      font-size: 25px;
-      font-weight: bold;
-    }
+.card-value {
+  font-size: 25px;
+  font-weight: bold;
+}
 
-    .status {
-      color: #8f9baa;
-      font-size: 13px;
-      margin-bottom: 12px;
-    }
+.status {
+  font-size: 13px;
+  color: #8f9baa;
+  margin-bottom: 12px;
+}
 
-    .table-wrap {
-      overflow-x: auto;
-      background: #141a22;
-      border: 1px solid #222b36;
-      border-radius: 12px;
-    }
+.status.ok {
+  color: #4ade80;
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 700px;
-    }
+.status.error {
+  color: #f87171;
+}
 
-    th,
-    td {
-      padding: 12px 14px;
-      border-bottom: 1px solid #222b36;
-      text-align: right;
-      white-space: nowrap;
-    }
+.table-wrap {
+  overflow-x: auto;
+  background: #141a22;
+  border: 1px solid #222b36;
+  border-radius: 12px;
+}
 
-    th {
-      color: #8f9baa;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      background: #10151c;
-    }
+table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
 
-    th:first-child,
-    td:first-child {
-      text-align: left;
-    }
+th,
+td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #222b36;
+  text-align: right;
+  white-space: nowrap;
+}
 
-    tr:last-child td {
-      border-bottom: 0;
-    }
+th {
+  background: #10151c;
+  color: #8f9baa;
+  font-size: 12px;
+  text-transform: uppercase;
+}
 
-    .token {
-      font-weight: bold;
-    }
+th:first-child,
+td:first-child {
+  text-align: left;
+}
 
-    .amount-input {
-      width: 125px;
-      padding: 8px 9px;
-      border-radius: 7px;
-      border: 1px solid #394554;
-      background: #0c1117;
-      color: white;
-      text-align: right;
-      font-size: 14px;
-      outline: none;
-    }
+tr:last-child td {
+  border-bottom: 0;
+}
 
-    .amount-input:focus {
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
-    }
+.token {
+  font-weight: bold;
+}
 
-    .price-unavailable {
-      color: #ef9a9a;
-    }
+.amount {
+  width: 125px;
+  padding: 8px;
+  border-radius: 7px;
+  border: 1px solid #394554;
+  background: #0c1117;
+  color: white;
+  text-align: right;
+  font-size: 14px;
+}
 
-    .updated {
-      color: #7f8b99;
-      font-size: 12px;
-      margin-top: 10px;
-    }
+.amount:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
 
-    @media (max-width: 700px) {
-      .container {
-        padding: 12px;
-      }
+.unavailable {
+  color: #f87171;
+}
 
-      h1 {
-        font-size: 23px;
-      }
+.updated {
+  margin-top: 10px;
+  color: #6f7b89;
+  font-size: 12px;
+}
 
-      .summary {
-        grid-template-columns: 1fr;
-      }
+.note {
+  margin-top: 15px;
+  color: #697586;
+  font-size: 12px;
+  line-height: 1.5;
+}
 
-      .amount-input {
-        width: 115px;
-      }
-    }
-  </style>
+@media (max-width: 700px) {
+
+  .container {
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 23px;
+  }
+
+  .summary {
+    grid-template-columns: 1fr;
+  }
+
+  .amount {
+    width: 115px;
+  }
+}
+</style>
 </head>
 
 <body>
@@ -187,39 +199,67 @@
 <div class="container">
 
   <h1>Crypto Portfolio</h1>
+
   <div class="subtitle">
-    Live prices · Editable amounts · Automatic valuation
+    Live valuation · Editable amounts · No API key required
   </div>
 
-  <div class="topbar">
-    <button onclick="refreshPrices()">↻ Refresh Prices</button>
-    <button class="secondary" onclick="resetAmounts()">Reset Amounts</button>
+  <div class="buttons">
+
+    <button id="refresh">
+      ↻ Refresh Prices
+    </button>
+
+    <button id="reset" class="secondary">
+      Reset Amounts
+    </button>
+
   </div>
 
   <div class="summary">
+
     <div class="card">
-      <div class="card-label">Portfolio Value</div>
-      <div class="card-value" id="totalValue">$0.00</div>
+      <div class="card-label">
+        Portfolio Value
+      </div>
+
+      <div class="card-value" id="total">
+        $0.00
+      </div>
     </div>
 
     <div class="card">
-      <div class="card-label">Assets</div>
-      <div class="card-value" id="assetCount">0</div>
+      <div class="card-label">
+        Assets
+      </div>
+
+      <div class="card-value" id="assets">
+        21
+      </div>
     </div>
 
     <div class="card">
-      <div class="card-label">Priced Assets</div>
-      <div class="card-value" id="pricedCount">0</div>
+      <div class="card-label">
+        Prices Available
+      </div>
+
+      <div class="card-value" id="priced">
+        0
+      </div>
     </div>
+
   </div>
 
-  <div class="status" id="status">
+  <div id="status" class="status">
     Loading prices...
   </div>
 
   <div class="table-wrap">
+
     <table>
+
       <thead>
+
         <tr>
           <th>Token</th>
           <th>Amount</th>
@@ -227,432 +267,818 @@
           <th>Value</th>
           <th>Weight</th>
         </tr>
+
       </thead>
 
-      <tbody id="portfolioBody"></tbody>
+      <tbody id="table"></tbody>
+
     </table>
+
   </div>
 
   <div class="updated" id="updated"></div>
 
+  <div class="note">
+    Amounts are saved automatically on this device/browser.
+    Prices are retrieved automatically from public market-data sources.
+  </div>
+
 </div>
+
 
 <script>
 
-const STORAGE_KEY = "cryptoPortfolioAmounts";
+/* =========================================================
+   PORTFOLIO
+   ========================================================= */
 
 const portfolio = [
-  { symbol: "UNI",   amount: 201.559,   id: "uniswap" },
-  { symbol: "LINK",  amount: 57.483,    id: "chainlink" },
-  { symbol: "AAVE",  amount: 5.012,     id: "aave" },
-  { symbol: "SOL",   amount: 11.106,    id: "solana" },
-  { symbol: "BNB",   amount: 1.407,     id: "binancecoin" },
-  { symbol: "HYPE",  amount: 11.58,     id: "hyperliquid" },
-  { symbol: "BTC",   amount: 0.02001204, id: "bitcoin" },
-  { symbol: "NEAR",  amount: 275.2966,    id: "near" },
-  { symbol: "MON",   amount: 9547,      id: "monad" },
-  { symbol: "ADA",   amount: 1106.55,   id: "cardano" },
-  { symbol: "SUI",   amount: 283.277,   id: "sui" },
-  { symbol: "PUMP",  amount: 64365,     id: "pump-fun" },
-  { symbol: "CAKE",  amount: 90.18,     id: "pancakeswap-token" },
-  { symbol: "ETH",   amount: 0.74105,   id: "ethereum" },
-  { symbol: "MORPHO", amount: 169.8,     id: "morpho" },
-  { symbol: "COMP",  amount: 19.76,     id: "compound-governance-token" },
-  { symbol: "AVAX",  amount: 44.26874,  id: "avalanche-2" },
-  { symbol: "TRX",   amount: 702.38,  id: "tron" },
-  { symbol: "STORM", amount: 30281,     id: "storm-trade" },
-  { symbol: "XRP",   amount: 696.216,   id: "ripple" },
-  { symbol: "TWT",   amount: 606,       id: "trust-wallet-token" }
+
+  { symbol:"UNI",    amount:201.559,    aliases:["UNI"] },
+  { symbol:"LINK",   amount:57.483,     aliases:["LINK"] },
+  { symbol:"AAVE",   amount:5.012,      aliases:["AAVE"] },
+  { symbol:"SOL",    amount:11.106,     aliases:["SOL"] },
+  { symbol:"BNB",    amount:1.407,      aliases:["BNB"] },
+  { symbol:"HYPE",   amount:11.58,      aliases:["HYPE"] },
+  { symbol:"BTC",    amount:0.02001204, aliases:["BTC","XBT"] },
+  { symbol:"NEAR",   amount:275.2966,   aliases:["NEAR"] },
+  { symbol:"MON",    amount:9547,       aliases:["MON"] },
+  { symbol:"ADA",    amount:1106.55,    aliases:["ADA"] },
+  { symbol:"SUI",    amount:283.277,    aliases:["SUI"] },
+  { symbol:"PUMP",   amount:64365,      aliases:["PUMP"] },
+  { symbol:"CAKE",   amount:90.18,      aliases:["CAKE"] },
+  { symbol:"ETH",    amount:0.74105,    aliases:["ETH"] },
+  { symbol:"MORPHO", amount:169.8,      aliases:["MORPHO"] },
+  { symbol:"COMP",   amount:19.76,      aliases:["COMP"] },
+  { symbol:"AVAX",   amount:44.26874,   aliases:["AVAX"] },
+  { symbol:"TRX",    amount:702.38,     aliases:["TRX"] },
+  { symbol:"STORM",  amount:30281,      aliases:["STORM"] },
+  { symbol:"XRP",    amount:696.216,    aliases:["XRP"] },
+  { symbol:"TWT",    amount:606,        aliases:["TWT"] }
+
 ];
+
+
+/* =========================================================
+   STORAGE
+   ========================================================= */
+
+const STORAGE_KEY =
+  "crypto_portfolio_amounts_2026";
+
+
+/* =========================================================
+   PRICES
+   ========================================================= */
 
 let prices = {};
 
-/*
-  Load saved amounts from this browser.
-*/
-function loadSavedAmounts() {
+
+/* =========================================================
+   ORIGINAL AMOUNTS
+   ========================================================= */
+
+const originalAmounts =
+  portfolio.map(x => x.amount);
+
+
+/* =========================================================
+   LOAD SAVED AMOUNTS
+   ========================================================= */
+
+function loadAmounts() {
 
   try {
 
-    const saved = JSON.parse(
-      localStorage.getItem(STORAGE_KEY)
-    );
+    const saved =
+      JSON.parse(
+        localStorage.getItem(STORAGE_KEY)
+      );
 
     if (!saved) return;
 
     portfolio.forEach(asset => {
 
       if (
-        saved[asset.symbol] !== undefined &&
-        !isNaN(Number(saved[asset.symbol]))
+        saved[asset.symbol] !== undefined
       ) {
-        asset.amount = Number(saved[asset.symbol]);
+
+        const n =
+          Number(saved[asset.symbol]);
+
+        if (
+          Number.isFinite(n) &&
+          n >= 0
+        ) {
+
+          asset.amount = n;
+
+        }
+
       }
 
     });
 
-  } catch (error) {
+  } catch (e) {
 
-    console.log("Could not load saved amounts:", error);
+    console.log(
+      "Storage unavailable"
+    );
 
   }
+
 }
 
 
-/*
-  Save current amounts.
-*/
+/* =========================================================
+   SAVE AMOUNTS
+   ========================================================= */
+
 function saveAmounts() {
 
   const saved = {};
 
   portfolio.forEach(asset => {
-    saved[asset.symbol] = asset.amount;
+
+    saved[asset.symbol] =
+      asset.amount;
+
   });
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(saved)
-  );
+  try {
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(saved)
+    );
+
+  } catch (e) {}
+
 }
 
 
-/*
-  Reset everything to the original portfolio amounts.
-*/
+/* =========================================================
+   RESET
+   ========================================================= */
+
 function resetAmounts() {
 
-  if (!confirm("Reset all amounts to the original values?")) {
+  if (
+    !confirm(
+      "Reset all crypto amounts to the original values?"
+    )
+  ) {
     return;
   }
 
-  portfolio[0].amount = 201.559;
-  portfolio[1].amount = 57.483;
-  portfolio[2].amount = 5.012;
-  portfolio[3].amount = 11.106;
-  portfolio[4].amount = 1.407;
-  portfolio[5].amount = 11.58;
-  portfolio[6].amount = 0.02001204;
-  portfolio[7].amount = 275.2966;
-  portfolio[8].amount = 9547;
-  portfolio[9].amount = 1106.55;
-  portfolio[10].amount = 283.277;
-  portfolio[11].amount = 64365;
-  portfolio[12].amount = 90.18;
-  portfolio[13].amount = 0.74105;
-  portfolio[14].amount = 169.8;
-  portfolio[15].amount = 19.76;
-  portfolio[16].amount = 44.26874;
-  portfolio[17].amount = 702.38;
-  portfolio[18].amount = 30281;
-  portfolio[19].amount = 696.216;
-  portfolio[20].amount = 606;
+  portfolio.forEach(
+    (asset, i) => {
+
+      asset.amount =
+        originalAmounts[i];
+
+    }
+  );
 
   saveAmounts();
-  renderTable();
+
+  render();
+
 }
 
 
-/*
-  Format money.
-*/
+/* =========================================================
+   MONEY
+   ========================================================= */
+
 function money(value) {
 
-  if (!isFinite(value)) {
+  if (!Number.isFinite(value)) {
     return "—";
   }
 
   return value.toLocaleString(
     "en-US",
     {
-      style: "currency",
-      currency: "USD",
-      maximumFractionDigits: 2
+      style:"currency",
+      currency:"USD",
+      maximumFractionDigits:2
     }
   );
+
 }
 
 
-/*
-  Format crypto amounts.
-*/
-function formatAmount(value) {
+/* =========================================================
+   PRICE FORMAT
+   ========================================================= */
 
-  return Number(value).toLocaleString(
-    "en-US",
-    {
-      maximumFractionDigits: 8
-    }
-  );
-}
+function priceFormat(value) {
 
-
-/*
-  Format price.
-*/
-function formatPrice(value) {
-
-  if (!isFinite(value)) {
+  if (!Number.isFinite(value)) {
     return "—";
   }
 
   if (value >= 1) {
-    return money(value);
+
+    return value.toLocaleString(
+      "en-US",
+      {
+        style:"currency",
+        currency:"USD",
+        maximumFractionDigits:2
+      }
+    );
+
   }
 
-  return "$" + value.toLocaleString(
-    "en-US",
-    {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 8
-    }
-  );
+  return "$" +
+    value.toLocaleString(
+      "en-US",
+      {
+        minimumFractionDigits:2,
+        maximumFractionDigits:10
+      }
+    );
+
 }
 
 
-/*
-  Build the table.
-*/
-function renderTable() {
+/* =========================================================
+   RENDER
+   ========================================================= */
 
-  const body = document.getElementById("portfolioBody");
+function render() {
 
-  body.innerHTML = "";
+  const table =
+    document.getElementById("table");
+
+  table.innerHTML = "";
+
 
   let total = 0;
-  let pricedCount = 0;
 
-  portfolio.forEach((asset, index) => {
+  let priced = 0;
 
-    const price = prices[asset.id];
 
-    let value = 0;
+  portfolio.forEach(asset => {
 
-    if (price !== undefined) {
-
-      value = asset.amount * price;
-
-      total += value;
-
-      pricedCount++;
-
-    }
-
-    const row = document.createElement("tr");
-
-    row.innerHTML = `
-      <td class="token">${asset.symbol}</td>
-
-      <td>
-        <input
-          class="amount-input"
-          type="number"
-          step="any"
-          value="${asset.amount}"
-          data-index="${index}"
-          aria-label="${asset.symbol} amount"
-        >
-      </td>
-
-      <td class="${price === undefined ? "price-unavailable" : ""}">
-        ${price === undefined ? "Unavailable" : formatPrice(price)}
-      </td>
-
-      <td>
-        ${price === undefined ? "—" : money(value)}
-      </td>
-
-      <td>
-        ${price === undefined || total === 0 ? "—" : ""}
-      </td>
-    `;
-
-    body.appendChild(row);
-  });
-
-  /*
-    Calculate weights after total is known.
-  */
-  const rows = body.querySelectorAll("tr");
-
-  rows.forEach((row, index) => {
-
-    const asset = portfolio[index];
-    const price = prices[asset.id];
-
-    const weightCell = row.children[4];
+    const price =
+      prices[asset.symbol];
 
     if (
-      price !== undefined &&
-      total > 0
+      Number.isFinite(price)
     ) {
 
-      const value = asset.amount * price;
+      total +=
+        asset.amount * price;
 
-      weightCell.textContent =
-        ((value / total) * 100).toFixed(2) + "%";
-
-    } else {
-
-      weightCell.textContent = "—";
+      priced++;
 
     }
+
   });
 
-  document.getElementById("totalValue").textContent =
+
+  portfolio.forEach(
+    (asset,index) => {
+
+      const price =
+        prices[asset.symbol];
+
+      const value =
+        Number.isFinite(price)
+          ? asset.amount * price
+          : null;
+
+      const weight =
+        value !== null &&
+        total > 0
+          ? (value / total) * 100
+          : null;
+
+
+      const row =
+        document.createElement("tr");
+
+
+      row.innerHTML = `
+
+        <td class="token">
+          ${asset.symbol}
+        </td>
+
+        <td>
+          <input
+            class="amount"
+            type="number"
+            min="0"
+            step="any"
+            inputmode="decimal"
+            value="${asset.amount}"
+            data-index="${index}"
+          >
+        </td>
+
+        <td class="${
+          price === undefined
+            ? "unavailable"
+            : ""
+        }">
+
+          ${
+            price === undefined
+              ? "Unavailable"
+              : priceFormat(price)
+          }
+
+        </td>
+
+        <td>
+          ${
+            value === null
+              ? "—"
+              : money(value)
+          }
+        </td>
+
+        <td>
+          ${
+            weight === null
+              ? "—"
+              : weight.toFixed(2) + "%"
+          }
+        </td>
+
+      `;
+
+
+      table.appendChild(row);
+
+    }
+  );
+
+
+  document.getElementById(
+    "total"
+  ).textContent =
     money(total);
 
-  document.getElementById("assetCount").textContent =
+
+  document.getElementById(
+    "assets"
+  ).textContent =
     portfolio.length;
 
-  document.getElementById("pricedCount").textContent =
-    pricedCount;
 
-  /*
-    Attach interactive amount handlers.
-  */
-  document.querySelectorAll(".amount-input").forEach(input => {
+  document.getElementById(
+    "priced"
+  ).textContent =
+    priced;
 
-    input.addEventListener("input", function () {
 
-      const index = Number(this.dataset.index);
+  attachInputs();
 
-      let value = parseFloat(this.value);
+}
 
-      if (isNaN(value)) {
-        value = 0;
-      }
 
-      portfolio[index].amount = value;
+/* =========================================================
+   EDITABLE AMOUNTS
 
-      saveAmounts();
+   The old version rebuilt the table on every keystroke.
+   This version waits until the field changes, so editing
+   amounts works properly on phone and desktop.
+   ========================================================= */
 
-      renderTable();
+function attachInputs() {
 
-      /*
-        Put cursor back into the edited field.
-      */
-      const newInput =
-        document.querySelector(
-          `.amount-input[data-index="${index}"]`
-        );
+  document
+    .querySelectorAll(".amount")
+    .forEach(input => {
 
-      if (newInput) {
+      input.addEventListener(
+        "change",
+        function() {
 
-        newInput.focus();
+          const index =
+            Number(
+              this.dataset.index
+            );
 
-        try {
-          newInput.setSelectionRange(
-            newInput.value.length,
-            newInput.value.length
-          );
-        } catch (e) {}
+          let value =
+            Number(this.value);
 
-      }
+
+          if (
+            !Number.isFinite(value) ||
+            value < 0
+          ) {
+
+            value = 0;
+
+          }
+
+
+          portfolio[index].amount =
+            value;
+
+
+          saveAmounts();
+
+          render();
+
+        }
+      );
 
     });
 
-  });
 }
 
 
-/*
-  Fetch live prices from CoinGecko.
-*/
+/* =========================================================
+   PUBLIC MARKET DATA
+   =========================================================
+
+   First source:
+   CoinPaprika public ticker feed.
+
+   No API key is entered by the user.
+
+   We download the public ticker list and match the
+   symbols against the portfolio.
+   ========================================================= */
+
+async function getCoinPaprikaPrices() {
+
+  const response =
+    await fetch(
+      "https://api.coinpaprika.com/v1/tickers?quotes=USD",
+      {
+        cache:"no-store"
+      }
+    );
+
+
+  if (!response.ok) {
+
+    throw new Error(
+      "Market data unavailable (" +
+      response.status +
+      ")"
+    );
+
+  }
+
+
+  const data =
+    await response.json();
+
+
+  const result = {};
+
+
+  /*
+    Build symbol lookup.
+  */
+
+  data.forEach(coin => {
+
+    if (
+      !coin.symbol ||
+      !coin.quotes ||
+      !coin.quotes.USD
+    ) {
+      return;
+    }
+
+
+    const symbol =
+      coin.symbol.toUpperCase();
+
+
+    const price =
+      Number(
+        coin.quotes.USD.price
+      );
+
+
+    if (
+      !Number.isFinite(price)
+    ) {
+      return;
+    }
+
+
+    /*
+      Keep the first match.
+
+      CoinPaprika normally has one primary
+      listing per symbol in the main ticker feed.
+    */
+
+    if (
+      result[symbol] === undefined
+    ) {
+
+      result[symbol] = price;
+
+    }
+
+  });
+
+
+  return result;
+
+}
+
+
+/* =========================================================
+   BINANCE FALLBACK
+
+   Useful for BTC, ETH, SOL, BNB, XRP, ADA, AVAX,
+   LINK, UNI, etc.
+
+   This is only a fallback if CoinPaprika doesn't
+   return a particular asset.
+   ========================================================= */
+
+async function getBinancePrices() {
+
+  const response =
+    await fetch(
+      "https://api.binance.com/api/v3/ticker/price",
+      {
+        cache:"no-store"
+      }
+    );
+
+
+  if (!response.ok) {
+
+    throw new Error(
+      "Binance unavailable"
+    );
+
+  }
+
+
+  const data =
+    await response.json();
+
+
+  const result = {};
+
+
+  data.forEach(item => {
+
+    const symbol =
+      item.symbol;
+
+
+    if (
+      symbol.endsWith("USDT")
+    ) {
+
+      const crypto =
+        symbol.slice(
+          0,
+          -4
+        );
+
+
+      const price =
+        Number(item.price);
+
+
+      if (
+        Number.isFinite(price)
+      ) {
+
+        result[crypto] =
+          price;
+
+      }
+
+    }
+
+  });
+
+
+  return result;
+
+}
+
+
+/* =========================================================
+   REFRESH PRICES
+   ========================================================= */
+
 async function refreshPrices() {
 
   const status =
-    document.getElementById("status");
+    document.getElementById(
+      "status"
+    );
+
 
   status.textContent =
     "Updating live prices...";
 
+  status.className =
+    "status";
+
+
+  let paprika = {};
+
+  let binance = {};
+
+
+  /*
+    Try CoinPaprika.
+  */
+
   try {
 
-    const ids = portfolio
-      .map(asset => asset.id)
-      .join(",");
+    paprika =
+      await getCoinPaprikaPrices();
 
-    const url =
-      "https://api.coingecko.com/api/v3/simple/price" +
-      "?ids=" +
-      encodeURIComponent(ids) +
-      "&vs_currencies=usd";
+  } catch (e) {
 
-    const response =
-      await fetch(url);
-
-    if (!response.ok) {
-      throw new Error(
-        "CoinGecko returned " + response.status
-      );
-    }
-
-    const data =
-      await response.json();
-
-    prices = {};
-
-    portfolio.forEach(asset => {
-
-      if (
-        data[asset.id] &&
-        data[asset.id].usd !== undefined
-      ) {
-
-        prices[asset.id] =
-          Number(data[asset.id].usd);
-
-      }
-
-    });
-
-    renderTable();
-
-    const now =
-      new Date().toLocaleString();
-
-    document.getElementById("updated").textContent =
-      "Last updated: " + now;
-
-    const missing =
-      portfolio.filter(
-        asset => prices[asset.id] === undefined
-      ).length;
-
-    if (missing > 0) {
-
-      status.textContent =
-        `Prices updated. ${missing} asset(s) unavailable.`;
-
-    } else {
-
-      status.textContent =
-        "All prices updated successfully.";
-
-    }
-
-  } catch (error) {
-
-    console.error(error);
-
-    status.textContent =
-      "Could not update prices. Try again in a moment.";
-
-    renderTable();
+    console.log(
+      "CoinPaprika failed:",
+      e
+    );
 
   }
+
+
+  /*
+    Try Binance too.
+
+    If it fails, CoinPaprika can still be used.
+  */
+
+  try {
+
+    binance =
+      await getBinancePrices();
+
+  } catch (e) {
+
+    console.log(
+      "Binance fallback failed:",
+      e
+    );
+
+  }
+
+
+  /*
+    Combine sources.
+
+    CoinPaprika first.
+    Binance fills gaps.
+  */
+
+  prices = {};
+
+
+  portfolio.forEach(asset => {
+
+    const symbol =
+      asset.symbol.toUpperCase();
+
+
+    if (
+      Number.isFinite(
+        paprika[symbol]
+      )
+    ) {
+
+      prices[symbol] =
+        paprika[symbol];
+
+      return;
+
+    }
+
+
+    if (
+      Number.isFinite(
+        binance[symbol]
+      )
+    ) {
+
+      prices[symbol] =
+        binance[symbol];
+
+    }
+
+  });
+
+
+  render();
+
+
+  const available =
+    portfolio.filter(
+      asset =>
+        Number.isFinite(
+          prices[asset.symbol]
+        )
+    );
+
+
+  const missing =
+    portfolio.filter(
+      asset =>
+        !Number.isFinite(
+          prices[asset.symbol]
+        )
+    );
+
+
+  if (
+    available.length ===
+    portfolio.length
+  ) {
+
+    status.textContent =
+      "✓ All portfolio prices updated.";
+
+    status.className =
+      "status ok";
+
+  } else {
+
+    status.textContent =
+      available.length +
+      " of " +
+      portfolio.length +
+      " prices available.";
+
+
+    if (missing.length) {
+
+      status.textContent +=
+        " Missing: " +
+        missing
+          .map(x => x.symbol)
+          .join(", ");
+
+    }
+
+  }
+
+
+  document.getElementById(
+    "updated"
+  ).textContent =
+    "Last checked: " +
+    new Date().toLocaleString();
+
 }
 
 
-/*
-  Start application.
-*/
-loadSavedAmounts();
+/* =========================================================
+   BUTTONS
+   ========================================================= */
 
-renderTable();
+document
+  .getElementById("refresh")
+  .addEventListener(
+    "click",
+    refreshPrices
+  );
+
+
+document
+  .getElementById("reset")
+  .addEventListener(
+    "click",
+    resetAmounts
+  );
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+loadAmounts();
+
+render();
 
 refreshPrices();
+
+
+/*
+  Automatically refresh every 5 minutes.
+*/
+
+setInterval(
+  refreshPrices,
+  5 * 60 * 1000
+);
 
 </script>
 
